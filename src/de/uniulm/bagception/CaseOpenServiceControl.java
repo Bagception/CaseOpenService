@@ -56,6 +56,7 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 		
 		Button startStopService = (Button) findViewById(R.id.startStopService);
 		startStopService.setText("Start Service");
+		startStopService.setEnabled(true);
 				
 	}
 	private void onServiceStarted(){
@@ -65,6 +66,7 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 		
 		Button startStopService = (Button) findViewById(R.id.startStopService);
 		startStopService.setText("Stop Service");
+		startStopService.setEnabled(true);
 	}
 	
 	private void startService(){
@@ -76,6 +78,8 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 	        this.stopService(serviceIntent);
 	}
 	public void onStartStopServiceClicked(View v){
+		Button startStopService = (Button) findViewById(R.id.startStopService);
+		startStopService.setEnabled(false);
 		if (ServiceUtil.isServiceRunning(this, CaseOpenService.class)){
 			Log.d("Service", "stop Service click command");
 			stopService();

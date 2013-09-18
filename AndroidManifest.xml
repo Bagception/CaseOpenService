@@ -32,7 +32,7 @@
         </activity>
         <service 
             android:name=".service.CaseOpenService"
-            android:process="CaseOpenServiceProcess" 
+            android:process=".CaseOpenServiceProcess" 
             ></service>
     </application>
 

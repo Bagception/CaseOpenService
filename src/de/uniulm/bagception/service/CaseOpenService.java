@@ -35,6 +35,11 @@ public class CaseOpenService extends Service implements Runnable{
 	}
 
 	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		keepAlive = false;
+	}
+	@Override
 	public void run() {
 		sendBroadcast(BROADCAST_COMMAND_START);
 		while(keepAlive){
@@ -51,4 +56,5 @@ public class CaseOpenService extends Service implements Runnable{
 		sendBroadcast(intent);
 	}
 
+	
 }
