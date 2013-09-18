@@ -12,8 +12,10 @@ public class CaseOpenService extends Service implements Runnable{
 	public static final String BROADCAST_COMMAND_SHUTDOWN = "SHUTDOWN";
 	public static final String BROADCAST_COMMAND_START = "START";
 	
-	private final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
-	private final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
+	public static final String BROADCAST_CASE_STATE = "de.uniulm.bagception.broadcast.casestate";
+	
+	public final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
+	public final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
 	private final int CASE_OPEN_STATE_NO_CHANGE=0;
 	
 	private final int CASE_STATE_OPEN = 1;
@@ -55,17 +57,27 @@ public class CaseOpenService extends Service implements Runnable{
 		while(keepAlive){
 			SystemClock.sleep(1000);
 			int case_state = hasCaseOpenStateChanged(); 
-			if (case_state==CASE_OPEN_STATE_CHANGED_TO_CLOSED){
-				//case now closed TODO send bc
-				Log.d("Service", "CASE CHANGED TO CLOSED");
-
-			}else if (case_state==CASE_OPEN_STATE_CHANGED_TO_OPEN){
-				//case now opened TODO send bc
-				Log.d("Service", "CASE CHANGED TO OPEN");
+			if (case_state != CASE_OPEN_STATE_NO_CHANGE){
+				caseStateChangedBroadcast(case_state);
 			}
+			
+//			if (case_state==CASE_OPEN_STATE_CHANGED_TO_CLOSED){
+//				//case now closed TODO send bc
+//				Log.d("Service", "CASE CHANGED TO CLOSED");
+//			}else if (case_state==CASE_OPEN_STATE_CHANGED_TO_OPEN){
+//				//case now opened TODO send bc
+//				Log.d("Service", "CASE CHANGED TO OPEN");
+//			}
 		}
 		stopSelf();
 		sendBroadcast(BROADCAST_COMMAND_SHUTDOWN);
+	}
+	
+	private void caseStateChangedBroadcast(int caseStateChanged){
+		Intent intent=new Intent();
+		intent.setAction(BROADCAST_CASE_STATE);
+		intent.putExtra(BROADCAST_CASE_STATE,caseStateChanged);
+		sendBroadcast(intent);
 	}
 	
 	private void sendBroadcast(String actionExtra){
