@@ -9,14 +9,13 @@
     tools:context=".CaseOpenServiceControl" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/casestatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="31dp"
-        android:layout_marginTop="30dp"
-        android:text="Server Status:" />
+        android:layout_alignBaseline="@+id/TextView01"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_toRightOf="@+id/startStopService"
+        android:text="unknown" />
 
     <TextView
         android:id="@+id/serviceStatusText"
@@ -24,52 +23,35 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView1"
         android:layout_alignBottom="@+id/textView1"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/textView3"
-        android:text="offline" />
+        android:layout_alignLeft="@+id/casestatus"
+        android:text="unknown" />
 
     <TextView
         android:id="@+id/TextView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="25dp"
+        android:layout_above="@+id/startStopService"
+        android:layout_alignLeft="@+id/startStopService"
+        android:layout_marginBottom="48dp"
         android:text="Case Status:" />
 
     <TextView
-        android:id="@+id/casestatus"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/TextView01"
-        android:layout_alignBottom="@+id/TextView01"
-        android:layout_alignLeft="@+id/textView4"
-        android:text="open" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="32dp"
-        android:text="Last Light Value:" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/serviceStatusText"
-        android:text="0" />
+        android:layout_above="@+id/TextView01"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_marginBottom="49dp"
+        android:text="Server Status:" />
 
     <Button
         android:id="@+id/startStopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="184dp"
+        android:layout_marginLeft="72dp"
         android:onClick="onStartStopServiceClicked"
         android:text="Start Service" />
 

@@ -106,12 +106,17 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 
 	@Override
 	public void caseOpened() {
-		Log.d("Service","CASE OPENED");
+		TextView serviceStatusText = (TextView) findViewById(R.id.casestatus);
+		serviceStatusText.setText("opened");
+		serviceStatusText.setTextColor(Color.RED);
+		
 	}
 
 	@Override
 	public void caseClosed() {
-		Log.d("Service","CASE CLOSED");
+		TextView serviceStatusText = (TextView) findViewById(R.id.casestatus);
+		serviceStatusText.setText("closed");
+		serviceStatusText.setTextColor(Color.GREEN);
 		
 	}
 
