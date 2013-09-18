@@ -87,7 +87,7 @@ public class CaseOpenService extends Service implements Runnable{
 		sendBroadcast(intent);
 	}
 
-	private boolean isCaseOpen(){
+	public boolean isCaseOpen(){
 		return false; //TODO check sensor
 	}
 	
