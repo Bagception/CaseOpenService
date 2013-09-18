@@ -1,22 +1,104 @@
 package de.uniulm.bagception;
 
+import de.philipphock.android.lib.services.ServiceUtil;
+import de.uniulm.bagception.service.CaseOpenBroadcastActor;
+import de.uniulm.bagception.service.CaseOpenService;
+import de.uniulm.bagception.service.CaseOpenServiceBroadcastReactor;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class CaseOpenServiceControl extends Activity {
+public class CaseOpenServiceControl extends Activity implements CaseOpenServiceBroadcastReactor{
 
+	private CaseOpenBroadcastActor caseOpenBroadcastActor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_case_open_service_control);
+		
+		caseOpenBroadcastActor = new CaseOpenBroadcastActor(this);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.case_open_service_control, menu);
 		return true;
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (ServiceUtil.isServiceRunning(this, CaseOpenService.class)){
+			onServiceStarted();
+		}else{
+			onServiceShutdown();
+		}
+		caseOpenBroadcastActor.register(this);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		caseOpenBroadcastActor.unregister(this);
+	}
+	
+	
+	private void onServiceShutdown(){
+		TextView serviceStatusText = (TextView) findViewById(R.id.serviceStatusText);
+		serviceStatusText.setText("offline");
+		serviceStatusText.setTextColor(Color.RED);
+		
+		Button startStopService = (Button) findViewById(R.id.startStopService);
+		startStopService.setText("Start Service");
+				
+	}
+	private void onServiceStarted(){
+		TextView serviceStatusText = (TextView) findViewById(R.id.serviceStatusText);
+		serviceStatusText.setText("online");
+		serviceStatusText.setTextColor(Color.GREEN);
+		
+		Button startStopService = (Button) findViewById(R.id.startStopService);
+		startStopService.setText("Stop Service");
+	}
+	
+	private void startService(){
+		 Intent serviceIntent = new Intent(this, CaseOpenService.class);
+	        this.startService(serviceIntent);		
+	}
+	private void stopService(){
+		 Intent serviceIntent = new Intent(this, CaseOpenService.class);
+	        this.stopService(serviceIntent);
+	}
+	public void onStartStopServiceClicked(View v){
+		if (ServiceUtil.isServiceRunning(this, CaseOpenService.class)){
+			Log.d("Service", "stop Service click command");
+			stopService();
+		}else{
+			Log.d("Service", "start Service click command");
+			startService();
+		}
+	}
+	
+	/* 
+	 * CaseOpenServiceBroadcastReactor 
+	 */
+
+
+	@Override
+	public void serviceShutdown() {
+		onServiceShutdown();
+	}
+
+	@Override
+	public void serviceStarted() {
+		onServiceStarted();
+	}
+
+	
 }

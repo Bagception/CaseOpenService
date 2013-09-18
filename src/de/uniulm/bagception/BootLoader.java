@@ -1,5 +1,6 @@
 package de.uniulm.bagception;
 
+import de.uniulm.bagception.service.CaseOpenService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
