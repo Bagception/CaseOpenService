@@ -11,6 +11,16 @@ public class CaseOpenService extends Service implements Runnable{
 	
 	public static final String BROADCAST_COMMAND_SHUTDOWN = "SHUTDOWN";
 	public static final String BROADCAST_COMMAND_START = "START";
+	
+	private final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
+	private final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
+	private final int CASE_OPEN_STATE_NO_CHANGE=0;
+	
+	private final int CASE_STATE_OPEN = 1;
+	private final int CASE_STATE_CLOSED = 0;
+	
+	private int last_case_state=-1;
+	
 	private boolean keepAlive=true;
 
 	private Thread serviceThread = null;
@@ -44,8 +54,17 @@ public class CaseOpenService extends Service implements Runnable{
 		sendBroadcast(BROADCAST_COMMAND_START);
 		while(keepAlive){
 			SystemClock.sleep(1000);
-			Log.d("Service", "now I would check  the light");
+			int case_state = hasCaseOpenStateChanged(); 
+			if (case_state==CASE_OPEN_STATE_CHANGED_TO_CLOSED){
+				//case now closed TODO send bc
+				Log.d("Service", "CASE CHANGED TO CLOSED");
+
+			}else if (case_state==CASE_OPEN_STATE_CHANGED_TO_OPEN){
+				//case now opened TODO send bc
+				Log.d("Service", "CASE CHANGED TO OPEN");
+			}
 		}
+		stopSelf();
 		sendBroadcast(BROADCAST_COMMAND_SHUTDOWN);
 	}
 	
@@ -56,5 +75,30 @@ public class CaseOpenService extends Service implements Runnable{
 		sendBroadcast(intent);
 	}
 
+	private boolean isCaseOpen(){
+		return true; //TODO check sensor
+	}
 	
+	private int hasCaseOpenStateChanged(){
+		boolean curCaseOpen = isCaseOpen();
+		int ret = CASE_OPEN_STATE_NO_CHANGE;
+		if (curCaseOpen){
+			if (last_case_state != CASE_STATE_OPEN){
+				ret =  CASE_OPEN_STATE_CHANGED_TO_OPEN;
+			}
+		}else{
+			if (last_case_state != CASE_STATE_CLOSED){
+				ret =  CASE_OPEN_STATE_CHANGED_TO_CLOSED;
+			}
+		}
+		if (curCaseOpen){
+			last_case_state = CASE_STATE_OPEN;	
+		}else{
+			last_case_state = CASE_STATE_CLOSED;
+		}
+		
+		return ret;
+	}
+	
+
 }
