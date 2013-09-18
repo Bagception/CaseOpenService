@@ -19,15 +19,6 @@
         android:text="Server Status:" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="41dp"
-        android:text="Last Light Value" />
-
-    <TextView
         android:id="@+id/serviceStatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +27,33 @@
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/textView3"
         android:text="offline" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="25dp"
+        android:text="Case Status:" />
+
+    <TextView
+        android:id="@+id/casestatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextView01"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_alignLeft="@+id/textView4"
+        android:text="open" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="32dp"
+        android:text="Last Light Value:" />
 
     <TextView
         android:id="@+id/textView4"
@@ -50,9 +68,8 @@
         android:id="@+id/startStopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
+        android:layout_centerVertical="true"
         android:onClick="onStartStopServiceClicked"
         android:text="Start Service" />
 

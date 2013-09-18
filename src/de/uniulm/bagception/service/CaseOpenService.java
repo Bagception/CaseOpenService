@@ -7,15 +7,15 @@ import android.os.SystemClock;
 import android.util.Log;
 
 public class CaseOpenService extends Service implements Runnable{
-	public static final String BROADCAST_COMMAND_INTENT = "de.uniulm.bagception.service.CMD";
+	public static final String BROADCAST_COMMAND_INTENT = "de.uniulm.bagception.broadcast.CMD";
 	
 	public static final String BROADCAST_COMMAND_SHUTDOWN = "SHUTDOWN";
 	public static final String BROADCAST_COMMAND_START = "START";
 	
 	public static final String BROADCAST_CASE_STATE = "de.uniulm.bagception.broadcast.casestate";
 	
-	public final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
-	public final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
+	public static final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
+	public static final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
 	private final int CASE_OPEN_STATE_NO_CHANGE=0;
 	
 	private final int CASE_STATE_OPEN = 1;

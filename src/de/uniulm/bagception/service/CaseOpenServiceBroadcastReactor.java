@@ -6,4 +6,7 @@ public interface CaseOpenServiceBroadcastReactor extends Reactor{
 
 	public void serviceShutdown();
 	public void serviceStarted();
+	
+	public void caseOpened();
+	public void caseClosed();
 }

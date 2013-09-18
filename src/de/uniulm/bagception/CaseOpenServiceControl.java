@@ -104,5 +104,16 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 		onServiceStarted();
 	}
 
+	@Override
+	public void caseOpened() {
+		Log.d("Service","CASE OPENED");
+	}
+
+	@Override
+	public void caseClosed() {
+		Log.d("Service","CASE CLOSED");
+		
+	}
+
 	
 }
