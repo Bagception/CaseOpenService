@@ -4,9 +4,15 @@ import de.philipphock.android.lib.services.ServiceUtil;
 import de.uniulm.bagception.service.CaseOpenBroadcastActor;
 import de.uniulm.bagception.service.CaseOpenService;
 import de.uniulm.bagception.service.CaseOpenServiceBroadcastReactor;
+import de.uniulm.bagception.service.CaseOpenServiceRemote;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +23,9 @@ import android.widget.TextView;
 public class CaseOpenServiceControl extends Activity implements CaseOpenServiceBroadcastReactor{
 
 	private CaseOpenBroadcastActor caseOpenBroadcastActor;
+	private CaseOpenServiceRemote remoteService;
+	private boolean serviceBound = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +49,7 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 			onServiceShutdown();
 		}
 		caseOpenBroadcastActor.register(this);
+
 	}
 	
 	@Override
@@ -49,15 +59,25 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 	}
 	
 	
-	private void onServiceShutdown(){
+	private void onServiceShutdown(){ 
 		TextView serviceStatusText = (TextView) findViewById(R.id.serviceStatusText);
 		serviceStatusText.setText("offline");
 		serviceStatusText.setTextColor(Color.RED);
 		
 		Button startStopService = (Button) findViewById(R.id.startStopService);
 		startStopService.setText("Start Service");
-		startStopService.setEnabled(true);
-				
+		startStopService.setEnabled(true);	
+		
+		TextView caseStatusText = (TextView) findViewById(R.id.casestatus);
+		caseStatusText.setText("unknown");
+		caseStatusText.setTextColor(Color.RED);
+		
+		if (serviceBound){
+			serviceBound = false;
+			unbindService(serviceConnection);
+		}
+		
+
 	}
 	private void onServiceStarted(){
 		TextView serviceStatusText = (TextView) findViewById(R.id.serviceStatusText);
@@ -67,7 +87,20 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 		Button startStopService = (Button) findViewById(R.id.startStopService);
 		startStopService.setText("Stop Service");
 		startStopService.setEnabled(true);
+		
+		
+		if (!serviceBound){
+			Log.d("Service","BIND");
+			
+			if (!bindService(new Intent(this,CaseOpenService.class),
+	                serviceConnection, 0)){
+				Log.d("Service","error binding to service");
+			}else{
+				serviceBound = true;
+			}
+		}
 	}
+		
 	
 	private void startService(){
 		 Intent serviceIntent = new Intent(this, CaseOpenService.class);
@@ -97,9 +130,6 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 	@Override
 	public void serviceShutdown() {
 		onServiceShutdown();
-		TextView serviceStatusText = (TextView) findViewById(R.id.casestatus);
-		serviceStatusText.setText("unknown");
-		serviceStatusText.setTextColor(Color.RED);
 	}
 
 	@Override
@@ -112,7 +142,7 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 		TextView serviceStatusText = (TextView) findViewById(R.id.casestatus);
 		serviceStatusText.setText("opened");
 		serviceStatusText.setTextColor(Color.BLUE);
-		
+
 	}
 
 	@Override
@@ -123,5 +153,31 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 		
 	}
 
+	
+	//communication with service
+	private ServiceConnection serviceConnection = new ServiceConnection() {
+		
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			Log.d("Service","service disconnected");
+
+			remoteService = null;
+		}
+		
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			remoteService=CaseOpenServiceRemote.Stub.asInterface(service);
+			Log.d("Service","service connected");
+			try {
+				if (remoteService.isCaseOpened()){
+					caseOpened();
+				}else{
+					caseClosed();
+				}
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	};
 	
 }
