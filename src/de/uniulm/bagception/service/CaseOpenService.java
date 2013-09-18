@@ -88,7 +88,7 @@ public class CaseOpenService extends Service implements Runnable{
 	}
 
 	private boolean isCaseOpen(){
-		return true; //TODO check sensor
+		return false; //TODO check sensor
 	}
 	
 	private int hasCaseOpenStateChanged(){

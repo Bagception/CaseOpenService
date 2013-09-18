@@ -15,6 +15,7 @@
         android:layout_alignBaseline="@+id/TextView01"
         android:layout_alignBottom="@+id/TextView01"
         android:layout_toRightOf="@+id/startStopService"
+        android:textColor="@color/red"
         android:text="unknown" />
 
     <TextView

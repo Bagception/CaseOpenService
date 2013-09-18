@@ -97,6 +97,9 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 	@Override
 	public void serviceShutdown() {
 		onServiceShutdown();
+		TextView serviceStatusText = (TextView) findViewById(R.id.casestatus);
+		serviceStatusText.setText("unknown");
+		serviceStatusText.setTextColor(Color.RED);
 	}
 
 	@Override
@@ -108,7 +111,7 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 	public void caseOpened() {
 		TextView serviceStatusText = (TextView) findViewById(R.id.casestatus);
 		serviceStatusText.setText("opened");
-		serviceStatusText.setTextColor(Color.RED);
+		serviceStatusText.setTextColor(Color.BLUE);
 		
 	}
 
