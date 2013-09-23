@@ -1,5 +1,6 @@
 package de.uniulm.bagception.service;
 
+import de.uniulm.bagception.sensor.LightSensorService;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -7,7 +8,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
 
-public class CaseOpenService extends Service implements Runnable{
+public class CaseOpenService extends LightSensorService implements Runnable{
 	public static final String BROADCAST_COMMAND_INTENT = "de.uniulm.bagception.broadcast.CMD";
 	
 	public static final String BROADCAST_COMMAND_SHUTDOWN = "SHUTDOWN";
@@ -30,6 +31,7 @@ public class CaseOpenService extends Service implements Runnable{
 	
 	@Override
 	public synchronized int onStartCommand(Intent intent, int flags, int startId) {
+		super.onStartCommand(intent, flags, startId);
 		Log.d("Service","start cmd recv");
 
 		if (serviceThread == null){
