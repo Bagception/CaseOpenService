@@ -8,7 +8,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.util.Log;
 
-public class CaseOpenService extends LightSensorService implements Runnable{
+public class CaseOpenService extends LightSensorService {
 	public static final String BROADCAST_COMMAND_INTENT = "de.uniulm.bagception.broadcast.CMD";
 	
 	public static final String BROADCAST_COMMAND_SHUTDOWN = "SHUTDOWN";
@@ -18,28 +18,14 @@ public class CaseOpenService extends LightSensorService implements Runnable{
 	
 	public static final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
 	public static final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
-	private final int CASE_OPEN_STATE_NO_CHANGE=0;
-	
-	private final int CASE_STATE_OPEN = 1;
-	private final int CASE_STATE_CLOSED = 0;
-	
-	private int last_case_state=-1;
-	
-	private boolean keepAlive=true;
 
-	private Thread serviceThread = null;
 	
 	@Override
 	public synchronized int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
-		Log.d("Service","start cmd recv");
+		
+		sendBroadcast(BROADCAST_COMMAND_START);
 
-		if (serviceThread == null){
-			serviceThread = new Thread(this);
-			serviceThread.start();
-		}else{
-			Log.d("Service","already started");
-		}
 		return Service.START_STICKY;
 	}
 	
@@ -52,29 +38,10 @@ public class CaseOpenService extends LightSensorService implements Runnable{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		keepAlive = false;
-	}
-	@Override
-	public void run() {
-		sendBroadcast(BROADCAST_COMMAND_START);
-		while(keepAlive){
-			SystemClock.sleep(1000);
-			int case_state = hasCaseOpenStateChanged(); 
-			if (case_state != CASE_OPEN_STATE_NO_CHANGE){
-				caseStateChangedBroadcast(case_state);
-			}
-			
-//			if (case_state==CASE_OPEN_STATE_CHANGED_TO_CLOSED){
-//				//case now closed TODO send bc
-//				Log.d("Service", "CASE CHANGED TO CLOSED");
-//			}else if (case_state==CASE_OPEN_STATE_CHANGED_TO_OPEN){
-//				//case now opened TODO send bc
-//				Log.d("Service", "CASE CHANGED TO OPEN");
-//			}
-		}
-		stopSelf();
 		sendBroadcast(BROADCAST_COMMAND_SHUTDOWN);
 	}
+
+	
 	
 	private void caseStateChangedBroadcast(int caseStateChanged){
 		Intent intent=new Intent();
@@ -91,29 +58,13 @@ public class CaseOpenService extends LightSensorService implements Runnable{
 	}
 
 	public boolean isCaseOpen(){
-		return false; //TODO check sensor
+		if (isCaseOpen == null){
+			return false;
+		}
+		return isCaseOpen; 
 	}
 	
-	private int hasCaseOpenStateChanged(){
-		boolean curCaseOpen = isCaseOpen();
-		int ret = CASE_OPEN_STATE_NO_CHANGE;
-		if (curCaseOpen){
-			if (last_case_state != CASE_STATE_OPEN){
-				ret =  CASE_OPEN_STATE_CHANGED_TO_OPEN;
-			}
-		}else{
-			if (last_case_state != CASE_STATE_CLOSED){
-				ret =  CASE_OPEN_STATE_CHANGED_TO_CLOSED;
-			}
-		}
-		if (curCaseOpen){
-			last_case_state = CASE_STATE_OPEN;	
-		}else{
-			last_case_state = CASE_STATE_CLOSED;
-		}
-		
-		return ret;
-	}
+
 	
 
 	//IPC
@@ -128,21 +79,21 @@ public class CaseOpenService extends LightSensorService implements Runnable{
 
 	@Override
 	protected void onCaseChangedToOpen() {
-		Log.d("Sensor", "CaseOpened");
+		caseStateChangedBroadcast(CASE_OPEN_STATE_CHANGED_TO_OPEN);
+		Log.d("Service","CASE OPEN");
 
 	}
 
 
 	@Override
 	protected void onCaseChangedToClosed() {
-		Log.d("Sensor", "CaseClosed");
-		
+		caseStateChangedBroadcast(CASE_OPEN_STATE_CHANGED_TO_CLOSED);
+		Log.d("Service","CASE CLOSED");
 	}
 
 
 	@Override
 	protected void onCaseChanged(boolean isOpen) {
-		Log.d("Sensor", "isCaseOpened "+isOpen);
-		
+		//nop
 	}
 }

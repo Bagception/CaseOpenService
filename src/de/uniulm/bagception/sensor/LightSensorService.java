@@ -9,7 +9,7 @@ import de.philipphock.android.lib.services.SensorService;
 
 public abstract class LightSensorService extends SensorService{
 
-	private Boolean isCaseOpen=null;
+	protected Boolean isCaseOpen=null;
 	private final int THRESHOLD = 10;
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -37,7 +37,7 @@ public abstract class LightSensorService extends SensorService{
 
 			}
 		}
-		//Log.d("Sensor", light+"");
+
 	}
 
 	@Override
