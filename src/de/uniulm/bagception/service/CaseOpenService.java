@@ -125,4 +125,24 @@ public class CaseOpenService extends LightSensorService implements Runnable{
 			return CaseOpenService.this.isCaseOpen();
 		}
 	};
+
+	@Override
+	protected void onCaseChangedToOpen() {
+		Log.d("Sensor", "CaseOpened");
+
+	}
+
+
+	@Override
+	protected void onCaseChangedToClosed() {
+		Log.d("Sensor", "CaseClosed");
+		
+	}
+
+
+	@Override
+	protected void onCaseChanged(boolean isOpen) {
+		Log.d("Sensor", "isCaseOpened "+isOpen);
+		
+	}
 }
