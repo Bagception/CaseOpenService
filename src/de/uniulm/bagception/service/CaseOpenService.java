@@ -5,22 +5,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.os.SystemClock;
 import android.util.Log;
 
-public class CaseOpenService extends LightSensorService {
-	public static final String BROADCAST_COMMAND_INTENT = "de.uniulm.bagception.broadcast.CMD";
-	
-	public static final String BROADCAST_COMMAND_SHUTDOWN = "SHUTDOWN";
-	public static final String BROADCAST_COMMAND_START = "START";
-	
-	public static final String BROADCAST_CASE_STATE = "de.uniulm.bagception.broadcast.casestate";
-	
-	public static final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
-	public static final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
-
-	
-	@Override
+public class CaseOpenService extends LightSensorService implements CaseOpenServiceConstants{
 	public synchronized int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 		

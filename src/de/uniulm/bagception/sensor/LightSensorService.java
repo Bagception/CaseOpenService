@@ -21,7 +21,7 @@ public abstract class LightSensorService extends SensorService{
 	protected abstract void onCaseChanged(boolean isOpen);
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		Log.d("EVAL",(int)event.values[0]+"");
+		Log.d("EVAL",event.values[0]+"");
 		int light = (int)event.values[0];
 		if (light < THRESHOLD){//close 
 			if (isCaseOpen == null || isCaseOpen){
