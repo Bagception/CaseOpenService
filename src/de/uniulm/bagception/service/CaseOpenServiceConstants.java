@@ -10,4 +10,6 @@ public interface CaseOpenServiceConstants {
 	
 	public static final int CASE_OPEN_STATE_CHANGED_TO_OPEN=1;
 	public static final int CASE_OPEN_STATE_CHANGED_TO_CLOSED=2;
+	
+	public static final String SERVICE_NAME = "de.uniulm.bagception.service.CaseOpenService";
 }

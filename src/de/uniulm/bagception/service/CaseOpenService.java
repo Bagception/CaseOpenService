@@ -45,6 +45,7 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 	}
 
 	public boolean isCaseOpen(){
+		Log.d("Service","IS CASE OPEN CHECK");
 		if (isCaseOpen == null){
 			return false;
 		}

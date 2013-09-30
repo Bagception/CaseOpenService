@@ -32,8 +32,15 @@
         </activity>
         <service 
             android:name=".service.CaseOpenService"
-            android:process=".CaseOpenServiceProcess" 
-            ></service>
+            android:process=":CaseOpenServiceProcess" 
+            >
+             <intent-filter>
+             <action android:name="de.uniulm.bagception.service.CaseOpenServiceRemote" >
+             </action>
+          </intent-filter>
+            
+            
+        </service>
     </application>
 
 </manifest>
