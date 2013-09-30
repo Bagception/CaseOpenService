@@ -41,6 +41,15 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 	}
 
 	@Override
+	protected void onPause() {
+		if (serviceBound){
+			serviceBound = false;
+			unbindService(serviceConnection);
+		}
+		super.onPause();
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		if (ServiceUtil.isServiceRunning(this, CaseOpenService.class)){
@@ -100,14 +109,14 @@ public class CaseOpenServiceControl extends Activity implements CaseOpenServiceB
 			}
 		}
 	}
-		
+		 
 	
 	private void startService(){
-		 Intent serviceIntent = new Intent(this, CaseOpenService.class);
+		 Intent serviceIntent = new Intent("de.uniulm.bagception.service.CaseOpenServiceRemote");
 	        this.startService(serviceIntent);		
 	}
 	private void stopService(){
-		 Intent serviceIntent = new Intent(this, CaseOpenService.class);
+		 Intent serviceIntent = new Intent(CaseOpenServiceRemote.class.getName());
 	        this.stopService(serviceIntent);
 	}
 	public void onStartStopServiceClicked(View v){
