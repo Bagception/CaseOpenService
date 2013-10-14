@@ -13,7 +13,7 @@ public class CaseOpenBroadcastActor extends BroadcastActor<CaseOpenServiceBroadc
 	}
 
 	@Override
-	public void register(Activity a) {
+	public void register(Context a) {
 		IntentFilter filter = new IntentFilter(CaseOpenService.BROADCAST_COMMAND_INTENT);
 		filter.addAction(CaseOpenService.BROADCAST_CASE_STATE);
 	    a.registerReceiver(this, filter);		

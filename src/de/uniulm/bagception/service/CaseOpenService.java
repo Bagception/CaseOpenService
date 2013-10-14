@@ -45,7 +45,6 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 	}
 
 	public boolean isCaseOpen(){
-		Log.d("Service","IS CASE OPEN CHECK");
 		if (isCaseOpen == null){
 			return false;
 		}
@@ -68,7 +67,6 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 	@Override
 	protected void onCaseChangedToOpen() {
 		caseStateChangedBroadcast(CASE_OPEN_STATE_CHANGED_TO_OPEN);
-		Log.d("Service","CASE OPEN");
 
 	}
 
@@ -76,7 +74,6 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 	@Override
 	protected void onCaseChangedToClosed() {
 		caseStateChangedBroadcast(CASE_OPEN_STATE_CHANGED_TO_CLOSED);
-		Log.d("Service","CASE CLOSED");
 	}
 
 
