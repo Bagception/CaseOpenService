@@ -21,21 +21,13 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="de.uniulm.bagception.CaseOpenServiceControl"
-            android:label="@string/title_activity_case_open_service_control" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        
         <service 
             android:name=".service.CaseOpenService"
             android:process=":CaseOpenServiceProcess" 
             >
              <intent-filter>
-             <action android:name="de.uniulm.bagception.service.CaseOpenServiceRemote" >
+             <action android:name="de.uniulm.bagception.service.CaseOpenService" >
              </action>
           </intent-filter>
             
