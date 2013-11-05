@@ -3,15 +3,13 @@ package de.uniulm.bagception.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import de.uniulm.bagception.sensor.LightSensorService;
 
 public class CaseOpenService extends LightSensorService implements CaseOpenServiceConstants{
 	public synchronized int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
-		
-		sendBroadcast(BROADCAST_COMMAND_START);
-
 		return Service.START_STICKY;
 	}
 	
@@ -20,13 +18,6 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 	public IBinder onBind(Intent intent) {
 		return mBinder;
 	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		sendBroadcast(BROADCAST_COMMAND_SHUTDOWN);
-	}
-
 	
 	
 	private void caseStateChangedBroadcast(int caseStateChanged){
@@ -36,12 +27,6 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 		sendBroadcast(intent);
 	}
 	
-	private void sendBroadcast(String actionExtra){
-		Intent intent=new Intent();
-		intent.setAction(BROADCAST_COMMAND_INTENT);
-		intent.putExtra(BROADCAST_COMMAND_INTENT,actionExtra);
-		sendBroadcast(intent);
-	}
 
 	public boolean isCaseOpen(){
 		if (isCaseOpen == null){
@@ -79,5 +64,19 @@ public class CaseOpenService extends LightSensorService implements CaseOpenServi
 	@Override
 	protected void onCaseChanged(boolean isOpen) {
 		//nop
+	}
+
+
+	@Override
+	protected void handleMessage(Message m) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	protected void onFirstInit() {
+		// TODO Auto-generated method stub
+		
 	}
 }
