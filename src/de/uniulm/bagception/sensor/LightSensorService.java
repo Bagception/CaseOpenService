@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.os.IBinder;
-import android.util.Log;
 import de.philipphock.android.lib.services.SensorService;
 
 public abstract class LightSensorService extends SensorService{
