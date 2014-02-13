@@ -10,7 +10,6 @@ public class BootLoader extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d("Service","system boot recv");
 		 Intent startServiceIntent = new Intent(context, CaseOpenService.class);
 	        context.startService(startServiceIntent);		
 	}
